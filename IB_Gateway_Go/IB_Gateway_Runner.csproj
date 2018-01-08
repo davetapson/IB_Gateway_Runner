@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{AC8FB261-8CCA-4A8D-9E8D-C5070E7D8B7F}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>IB_Gateway_Go</RootNamespace>
-    <AssemblyName>IB_Gateway_Runner</AssemblyName>
+    <RootNamespace>IB_Gateway_Runner</RootNamespace>
+    <AssemblyName>IB Gateway Runner</AssemblyName>
     <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -22,7 +22,10 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>1</ApplicationRevision>
+    <ProductName>IB Gateway Runner</ProductName>
+    <PublisherName>AmiGo Automation</PublisherName>
+    <SuiteName>AmiGo IB Automation</SuiteName>
+    <ApplicationRevision>2</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
