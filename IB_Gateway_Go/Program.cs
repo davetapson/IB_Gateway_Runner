@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace IB_Gateway_Go
+namespace IB_Gateway_Runner
 {
     static class Program
     {

@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace IB_Gateway_Go
+namespace IB_Gateway_Runner
 {
     public partial class frmMain : Form
     {
@@ -22,14 +22,14 @@ namespace IB_Gateway_Go
 
         private void btnStart_Click(object sender, EventArgs e)
         {
-            if(btnStart.Text == "Start")
-            {
+            //if(btnStart.Text == "Start")
+            //{
                 p = StartGW();
-            }
-            else
-            {
-                StopGW(p);
-            }
+            //}
+            //else
+            //{
+            //    StopGW(p);
+            //}
             
         }
 
@@ -42,7 +42,7 @@ namespace IB_Gateway_Go
 
             @"username=" + txtUserName.Text +
                            " password=" + txtPassword.Text;
-            string date = DateTime.Now.ToLongDateString();
+            string date = DateTime.Now.ToString("yyyy-dd-MM HH:mm:ss");
             string logFilePath = @"C:\logs\IB_GW_Runner_" + date + ".log";
             // ${ JAVAEXE} ${ JAVAOPTIONS} ${ IBJTSDIR} username =${ USER} password =${ PASS} > ${ LOGFILE} 2 > &1
             // -cp [java options] [IBJts directory] [username=XXX] [password=ZZZ]
@@ -60,7 +60,8 @@ namespace IB_Gateway_Go
             else
             {
                 lblGWStatus.Text = "Running";
-                btnStart.Text = "Stop";
+                // btnStart.Text = "Stop";
+                lblStarted.Text = date;
                 return p;
             }
 

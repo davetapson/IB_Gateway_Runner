@@ -1,4 +1,4 @@
-﻿namespace IB_Gateway_Go
+﻿namespace IB_Gateway_Runner
 {
     partial class frmMain
     {
@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMain));
             this.btnStart = new System.Windows.Forms.Button();
             this.txtPassword = new System.Windows.Forms.TextBox();
             this.txtUserName = new System.Windows.Forms.TextBox();
@@ -44,7 +45,7 @@
             // 
             // btnStart
             // 
-            this.btnStart.Location = new System.Drawing.Point(123, 104);
+            this.btnStart.Location = new System.Drawing.Point(123, 80);
             this.btnStart.Name = "btnStart";
             this.btnStart.Size = new System.Drawing.Size(75, 23);
             this.btnStart.TabIndex = 0;
@@ -94,6 +95,7 @@
             this.chkEnabled.TabIndex = 5;
             this.chkEnabled.Text = "Enabled";
             this.chkEnabled.UseVisualStyleBackColor = true;
+            this.chkEnabled.Visible = false;
             // 
             // label3
             // 
@@ -116,7 +118,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(12, 139);
+            this.label4.Location = new System.Drawing.Point(12, 115);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(44, 13);
             this.label4.TabIndex = 8;
@@ -130,11 +132,12 @@
             this.label5.Size = new System.Drawing.Size(56, 13);
             this.label5.TabIndex = 9;
             this.label5.Text = "Run Time:";
+            this.label5.Visible = false;
             // 
             // lblStarted
             // 
             this.lblStarted.AutoSize = true;
-            this.lblStarted.Location = new System.Drawing.Point(95, 139);
+            this.lblStarted.Location = new System.Drawing.Point(95, 115);
             this.lblStarted.Name = "lblStarted";
             this.lblStarted.Size = new System.Drawing.Size(16, 13);
             this.lblStarted.TabIndex = 10;
@@ -148,12 +151,13 @@
             this.lblRunTime.Size = new System.Drawing.Size(16, 13);
             this.lblRunTime.TabIndex = 11;
             this.lblRunTime.Text = "...";
+            this.lblRunTime.Visible = false;
             // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(216, 179);
+            this.ClientSize = new System.Drawing.Size(216, 141);
             this.Controls.Add(this.lblRunTime);
             this.Controls.Add(this.lblStarted);
             this.Controls.Add(this.label5);
@@ -166,6 +170,7 @@
             this.Controls.Add(this.txtUserName);
             this.Controls.Add(this.txtPassword);
             this.Controls.Add(this.btnStart);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "frmMain";
