@@ -35,6 +35,8 @@ namespace IB_Gateway_Go
 
         private Process StartGW()
         {
+            SaveSettings();
+
             string gwExePath = @"C:\Jts\ibgateway\963\ibgateway.exe";
             string javaOptions = //"-cp jts.jar:total.2013.jar - Dsun.java2d.noddraw = true - Xmx512M ";
 
@@ -67,6 +69,13 @@ namespace IB_Gateway_Go
             //p.Close();
         }
 
+        private void SaveSettings()
+        {
+            Properties.GW_Runner.Default.UserName = txtUserName.Text;
+            Properties.GW_Runner.Default.Password = txtPassword.Text;
+            Properties.GW_Runner.Default.Save();
+        }
+
         private void StopGW(Process p)
         {
             if (p != null)
@@ -75,6 +84,12 @@ namespace IB_Gateway_Go
                 btnStart.Text = "Start";
                 lblGWStatus.Text = "Not Running";
             }
+        }
+
+        private void frmMain_Load(object sender, EventArgs e)
+        {
+            txtUserName.Text = Properties.GW_Runner.Default.UserName;
+            txtPassword.Text = Properties.GW_Runner.Default.Password;
         }
     }
 }

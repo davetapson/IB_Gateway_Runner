@@ -59,7 +59,6 @@
             this.txtPassword.PasswordChar = '*';
             this.txtPassword.Size = new System.Drawing.Size(100, 20);
             this.txtPassword.TabIndex = 1;
-            this.txtPassword.Text = "Makatini1";
             // 
             // txtUserName
             // 
@@ -67,7 +66,6 @@
             this.txtUserName.Name = "txtUserName";
             this.txtUserName.Size = new System.Drawing.Size(100, 20);
             this.txtUserName.TabIndex = 2;
-            this.txtUserName.Text = "d4v3t4ps1";
             // 
             // label1
             // 
@@ -173,6 +171,7 @@
             this.Name = "frmMain";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "GW Runner";
+            this.Load += new System.EventHandler(this.frmMain_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
