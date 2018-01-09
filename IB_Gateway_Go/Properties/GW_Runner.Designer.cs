@@ -70,5 +70,17 @@ namespace IB_Gateway_Runner.Properties {
                 this["TimerPeriod"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool RunGWOnStartup {
+            get {
+                return ((bool)(this["RunGWOnStartup"]));
+            }
+            set {
+                this["RunGWOnStartup"] = value;
+            }
+        }
     }
 }

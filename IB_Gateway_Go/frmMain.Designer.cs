@@ -43,11 +43,12 @@
             this.lblStarted = new System.Windows.Forms.Label();
             this.lblRunTime = new System.Windows.Forms.Label();
             this.tmrTimer = new System.Windows.Forms.Timer(this.components);
+            this.chkRunGWOnStartUp = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // btnStart
             // 
-            this.btnStart.Location = new System.Drawing.Point(123, 104);
+            this.btnStart.Location = new System.Drawing.Point(143, 127);
             this.btnStart.Name = "btnStart";
             this.btnStart.Size = new System.Drawing.Size(75, 23);
             this.btnStart.TabIndex = 0;
@@ -60,14 +61,14 @@
             this.txtPassword.Location = new System.Drawing.Point(98, 54);
             this.txtPassword.Name = "txtPassword";
             this.txtPassword.PasswordChar = '*';
-            this.txtPassword.Size = new System.Drawing.Size(100, 20);
+            this.txtPassword.Size = new System.Drawing.Size(120, 20);
             this.txtPassword.TabIndex = 1;
             // 
             // txtUserName
             // 
             this.txtUserName.Location = new System.Drawing.Point(98, 28);
             this.txtUserName.Name = "txtUserName";
-            this.txtUserName.Size = new System.Drawing.Size(100, 20);
+            this.txtUserName.Size = new System.Drawing.Size(120, 20);
             this.txtUserName.TabIndex = 2;
             // 
             // label1
@@ -93,9 +94,9 @@
             this.chkEnabled.AutoSize = true;
             this.chkEnabled.Location = new System.Drawing.Point(98, 81);
             this.chkEnabled.Name = "chkEnabled";
-            this.chkEnabled.Size = new System.Drawing.Size(65, 17);
+            this.chkEnabled.Size = new System.Drawing.Size(116, 17);
             this.chkEnabled.TabIndex = 5;
-            this.chkEnabled.Text = "Enabled";
+            this.chkEnabled.Text = "Keep GW Running";
             this.chkEnabled.UseVisualStyleBackColor = true;
             this.chkEnabled.CheckedChanged += new System.EventHandler(this.chkEnabled_CheckedChanged);
             // 
@@ -120,7 +121,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(12, 139);
+            this.label4.Location = new System.Drawing.Point(12, 166);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(44, 13);
             this.label4.TabIndex = 8;
@@ -129,7 +130,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(12, 158);
+            this.label5.Location = new System.Drawing.Point(12, 185);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(56, 13);
             this.label5.TabIndex = 9;
@@ -138,7 +139,7 @@
             // lblStarted
             // 
             this.lblStarted.AutoSize = true;
-            this.lblStarted.Location = new System.Drawing.Point(95, 139);
+            this.lblStarted.Location = new System.Drawing.Point(95, 166);
             this.lblStarted.Name = "lblStarted";
             this.lblStarted.Size = new System.Drawing.Size(16, 13);
             this.lblStarted.TabIndex = 10;
@@ -147,7 +148,7 @@
             // lblRunTime
             // 
             this.lblRunTime.AutoSize = true;
-            this.lblRunTime.Location = new System.Drawing.Point(95, 158);
+            this.lblRunTime.Location = new System.Drawing.Point(95, 185);
             this.lblRunTime.Name = "lblRunTime";
             this.lblRunTime.Size = new System.Drawing.Size(16, 13);
             this.lblRunTime.TabIndex = 11;
@@ -157,11 +158,22 @@
             // 
             this.tmrTimer.Tick += new System.EventHandler(this.tmrTimer_Tick);
             // 
+            // chkRunGWOnStartUp
+            // 
+            this.chkRunGWOnStartUp.AutoSize = true;
+            this.chkRunGWOnStartUp.Location = new System.Drawing.Point(98, 104);
+            this.chkRunGWOnStartUp.Name = "chkRunGWOnStartUp";
+            this.chkRunGWOnStartUp.Size = new System.Drawing.Size(120, 17);
+            this.chkRunGWOnStartUp.TabIndex = 12;
+            this.chkRunGWOnStartUp.Text = "Run GW on Startup";
+            this.chkRunGWOnStartUp.UseVisualStyleBackColor = true;
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(216, 178);
+            this.ClientSize = new System.Drawing.Size(230, 223);
+            this.Controls.Add(this.chkRunGWOnStartUp);
             this.Controls.Add(this.lblRunTime);
             this.Controls.Add(this.lblStarted);
             this.Controls.Add(this.label5);
@@ -180,7 +192,9 @@
             this.Name = "frmMain";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "GW Runner";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.frmMain_FormClosed);
             this.Load += new System.EventHandler(this.frmMain_Load);
+            this.Shown += new System.EventHandler(this.frmMain_Shown);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -201,6 +215,7 @@
         private System.Windows.Forms.Label lblStarted;
         private System.Windows.Forms.Label lblRunTime;
         private System.Windows.Forms.Timer tmrTimer;
+        private System.Windows.Forms.CheckBox chkRunGWOnStartUp;
     }
 }
 

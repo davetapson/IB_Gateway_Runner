@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NLog;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -8,6 +9,8 @@ namespace IB_Gateway_Runner
 {
     static class Program
     {
+        private static Logger logger = LogManager.GetCurrentClassLogger();
+
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
@@ -16,7 +19,14 @@ namespace IB_Gateway_Runner
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new frmMain());
+            try
+            {
+                Application.Run(new frmMain());
+            }
+            catch (Exception e)
+            {
+                logger.Fatal("IB GW Runner fatal error: " + e.Message);
+            }
         }
     }
 }

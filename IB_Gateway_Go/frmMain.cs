@@ -1,20 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
+﻿using NLog;
+using System;
 using System.Diagnostics;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace IB_Gateway_Runner
 {
     public partial class frmMain : Form
     {
-        Process p;
         DateTime started;
+        private static Logger logger = LogManager.GetCurrentClassLogger();
+
+        string GWProcessName = "ibgateway";
 
         public frmMain()
         {
@@ -25,26 +21,39 @@ namespace IB_Gateway_Runner
         {
             if (btnStart.Text == "Start")
             {
-                p = StartGW();
+                StartGW();
             }
             else
             {
-                StopGW(p);
+                StopGW();
+                if (!chkEnabled.Checked) btnStart.Enabled = false;
             }
-
         }
 
-        private Process StartGW()
+        public void StartGW()
         {
+            logger.Info("GW started.");
+
             SaveSettings();
+
+            if (IsRunning(GWProcessName))
+            {
+                SetControlsToRunning();
+
+                MessageBox.Show("GW is already running.", 
+                                "IB GW Runner",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Exclamation);
+                return;
+            }
 
             string gwExePath = @"C:\Jts\ibgateway\963\ibgateway.exe";
             string javaOptions = //"-cp jts.jar:total.2013.jar - Dsun.java2d.noddraw = true - Xmx512M ";
 
             @"username=" + txtUserName.Text +
                            " password=" + txtPassword.Text;
-            string date = DateTime.Now.ToString("yyyy-dd-MM HH:mm:ss");
-            string logFilePath = @"C:\logs\IB_GW_Runner_" + date + ".log";
+            
+            //string logFilePath = @"C:\logs\IB_GW_Runner_" + date + ".log";
             // ${ JAVAEXE} ${ JAVAOPTIONS} ${ IBJTSDIR} username =${ USER} password =${ PASS} > ${ LOGFILE} 2 > &1
             // -cp [java options] [IBJts directory] [username=XXX] [password=ZZZ]
 
@@ -52,19 +61,18 @@ namespace IB_Gateway_Runner
            // psi.WorkingDirectory = @"C:\Jts\ibgateway\963\jars"; 
             psi.CreateNoWindow = false;
             psi.UseShellExecute = false;
-            
+
             //p.StartInfo = psi;
-            if ((p = Process.Start(psi)) == null)
+            Process p = Process.Start(psi);
+
+            if (p == null)
             {
-                throw new InvalidOperationException("??");
+                logger.Error("GW Process failed.");
+                throw new InvalidOperationException("GW Process failed.");
             }
             else
             {
-                lblGWStatus.Text = "Running";
-                btnStart.Text = "Stop";
-                lblStarted.Text = date;
-                tmrTimer.Start();
-                return p;
+                SetControlsToRunning();
             }
 
             //p.WaitForExit();
@@ -72,55 +80,83 @@ namespace IB_Gateway_Runner
             //p.Close();
         }
 
+        private void SetControlsToRunning()
+        {
+
+            lblGWStatus.Text = "Running";
+            btnStart.Text = "Stop";
+            lblStarted.Text =  DateTime.Now.ToString("yyyy-dd-MM HH:mm:ss"); ;
+            tmrTimer.Start();
+        }
+
+        private void SetControlsToNotRunning()
+        {
+
+            lblGWStatus.Text = "Not Running";
+            btnStart.Text = "Start";
+            lblStarted.Text = lblRunTime.Text = "...";
+        }
+
         private void SaveSettings()
         {
             Properties.GW_Runner.Default.UserName = txtUserName.Text;
             Properties.GW_Runner.Default.Password = txtPassword.Text;
+            Properties.GW_Runner.Default.Enabled = chkEnabled.Checked;
+            Properties.GW_Runner.Default.RunGWOnStartup = chkRunGWOnStartUp.Checked;
             Properties.GW_Runner.Default.Save();
         }
 
-        private void StopGW(Process p)
+        public void StopGW()
         {
-            tmrTimer.Stop();
+            logger.Info("GW Runner stopped.");
+
+            //tmrTimer.Stop();
             btnStart.Text = "Start";
             lblGWStatus.Text = "Not Running";
 
+            Process p = IBGWRunnerProcess(GWProcessName);
             if (p != null)
             {
-                p.Close();                
+                p.Kill();                
             }
         }
 
         private void frmMain_Load(object sender, EventArgs e)
         {
+            InitialiseApp();
+        }
+
+        private void InitialiseApp()
+        {
+            logger.Info("IB GW Runner started.");
+
             started = DateTime.Now;
             txtUserName.Text = Properties.GW_Runner.Default.UserName;
             txtPassword.Text = Properties.GW_Runner.Default.Password;
             chkEnabled.Checked = Properties.GW_Runner.Default.Enabled;
+            chkRunGWOnStartUp.Checked = Properties.GW_Runner.Default.RunGWOnStartup;
             tmrTimer.Interval = Properties.GW_Runner.Default.TimerPeriod;
 
-            if (chkEnabled.Checked)
-            {
-                btnStart.Enabled = true;
-                //tmrTimer.Enabled = true;
-            }
-            else
-            {
-                btnStart.Enabled = false;
-                //tmrTimer.Enabled = false;
-            }
+            //if (chkEnabled.Checked)
+            //{
+            //    btnStart.Enabled = true;
+            //}
+            //else
+            //{
+            //    btnStart.Enabled = false;
+            //}
         }
 
         private void chkEnabled_CheckedChanged(object sender, EventArgs e)
         {
             if (chkEnabled.Checked)
             {
-                btnStart.Enabled = true;
+                //btnStart.Enabled = true;
                 Properties.GW_Runner.Default.Enabled = true;
             }
             else
             {
-                btnStart.Enabled = false;
+                //if(!IsRunning(GWProcessName)) btnStart.Enabled = false;
                 Properties.GW_Runner.Default.Enabled = false;
             }
 
@@ -139,13 +175,52 @@ namespace IB_Gateway_Runner
 
         private void CheckGatewayIsRunning()
         {
-            if (!IsRunning("ibgateway"))
+       
+             if (chkEnabled.Checked && !IsRunning(GWProcessName))
             {
                 LogFailure();
                 StartGW();
+                return;
+            }
+            if (!chkEnabled.Checked && !IsRunning(GWProcessName))
+            {
+                SetControlsToNotRunning();
             }
         }
 
+        private void LogFailure()
+        {
+            logger.Error("GW failed.");
+        }
+
         bool IsRunning(string name) => Process.GetProcessesByName(name).Length > 0;
+
+        Process IBGWRunnerProcess(string name) => Process.GetProcessesByName(name)[0];
+
+        private void frmMain_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            SaveSettings();
+
+            logger.Info("IB GW Runner closed: " + e.CloseReason);
+            logger.Info("***************************************\n");
+        }
+
+        private void frmMain_Shown(object sender, EventArgs e)
+        {
+           
+            if (IsRunning(GWProcessName))
+            {
+                logger.Info("IB GW Runner already running.");
+                SetControlsToRunning();
+
+                return;
+            }
+
+            if (chkRunGWOnStartUp.Checked && chkEnabled.Checked)
+            {
+                logger.Info("IB GW Runner started on startup.");
+                StartGW();
+            }
+        }
     }
 }
