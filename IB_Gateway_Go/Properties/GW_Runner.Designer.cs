@@ -58,5 +58,17 @@ namespace IB_Gateway_Runner.Properties {
                 this["Enabled"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("500")]
+        public int TimerPeriod {
+            get {
+                return ((int)(this["TimerPeriod"]));
+            }
+            set {
+                this["TimerPeriod"] = value;
+            }
+        }
     }
 }

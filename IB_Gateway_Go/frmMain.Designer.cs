@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMain));
             this.btnStart = new System.Windows.Forms.Button();
             this.txtPassword = new System.Windows.Forms.TextBox();
@@ -41,11 +42,12 @@
             this.label5 = new System.Windows.Forms.Label();
             this.lblStarted = new System.Windows.Forms.Label();
             this.lblRunTime = new System.Windows.Forms.Label();
+            this.tmrTimer = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
             // 
             // btnStart
             // 
-            this.btnStart.Location = new System.Drawing.Point(123, 80);
+            this.btnStart.Location = new System.Drawing.Point(123, 104);
             this.btnStart.Name = "btnStart";
             this.btnStart.Size = new System.Drawing.Size(75, 23);
             this.btnStart.TabIndex = 0;
@@ -95,7 +97,7 @@
             this.chkEnabled.TabIndex = 5;
             this.chkEnabled.Text = "Enabled";
             this.chkEnabled.UseVisualStyleBackColor = true;
-            this.chkEnabled.Visible = false;
+            this.chkEnabled.CheckedChanged += new System.EventHandler(this.chkEnabled_CheckedChanged);
             // 
             // label3
             // 
@@ -118,7 +120,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(12, 115);
+            this.label4.Location = new System.Drawing.Point(12, 139);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(44, 13);
             this.label4.TabIndex = 8;
@@ -132,12 +134,11 @@
             this.label5.Size = new System.Drawing.Size(56, 13);
             this.label5.TabIndex = 9;
             this.label5.Text = "Run Time:";
-            this.label5.Visible = false;
             // 
             // lblStarted
             // 
             this.lblStarted.AutoSize = true;
-            this.lblStarted.Location = new System.Drawing.Point(95, 115);
+            this.lblStarted.Location = new System.Drawing.Point(95, 139);
             this.lblStarted.Name = "lblStarted";
             this.lblStarted.Size = new System.Drawing.Size(16, 13);
             this.lblStarted.TabIndex = 10;
@@ -151,13 +152,16 @@
             this.lblRunTime.Size = new System.Drawing.Size(16, 13);
             this.lblRunTime.TabIndex = 11;
             this.lblRunTime.Text = "...";
-            this.lblRunTime.Visible = false;
+            // 
+            // tmrTimer
+            // 
+            this.tmrTimer.Tick += new System.EventHandler(this.tmrTimer_Tick);
             // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(216, 141);
+            this.ClientSize = new System.Drawing.Size(216, 178);
             this.Controls.Add(this.lblRunTime);
             this.Controls.Add(this.lblStarted);
             this.Controls.Add(this.label5);
@@ -196,6 +200,7 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label lblStarted;
         private System.Windows.Forms.Label lblRunTime;
+        private System.Windows.Forms.Timer tmrTimer;
     }
 }
 

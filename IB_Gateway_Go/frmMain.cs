@@ -14,6 +14,7 @@ namespace IB_Gateway_Runner
     public partial class frmMain : Form
     {
         Process p;
+        DateTime started;
 
         public frmMain()
         {
@@ -22,15 +23,15 @@ namespace IB_Gateway_Runner
 
         private void btnStart_Click(object sender, EventArgs e)
         {
-            //if(btnStart.Text == "Start")
-            //{
+            if (btnStart.Text == "Start")
+            {
                 p = StartGW();
-            //}
-            //else
-            //{
-            //    StopGW(p);
-            //}
-            
+            }
+            else
+            {
+                StopGW(p);
+            }
+
         }
 
         private Process StartGW()
@@ -60,8 +61,9 @@ namespace IB_Gateway_Runner
             else
             {
                 lblGWStatus.Text = "Running";
-                // btnStart.Text = "Stop";
+                btnStart.Text = "Stop";
                 lblStarted.Text = date;
+                tmrTimer.Start();
                 return p;
             }
 
@@ -79,18 +81,71 @@ namespace IB_Gateway_Runner
 
         private void StopGW(Process p)
         {
+            tmrTimer.Stop();
+            btnStart.Text = "Start";
+            lblGWStatus.Text = "Not Running";
+
             if (p != null)
             {
-                p.Close();
-                btnStart.Text = "Start";
-                lblGWStatus.Text = "Not Running";
+                p.Close();                
             }
         }
 
         private void frmMain_Load(object sender, EventArgs e)
         {
+            started = DateTime.Now;
             txtUserName.Text = Properties.GW_Runner.Default.UserName;
             txtPassword.Text = Properties.GW_Runner.Default.Password;
+            chkEnabled.Checked = Properties.GW_Runner.Default.Enabled;
+            tmrTimer.Interval = Properties.GW_Runner.Default.TimerPeriod;
+
+            if (chkEnabled.Checked)
+            {
+                btnStart.Enabled = true;
+                //tmrTimer.Enabled = true;
+            }
+            else
+            {
+                btnStart.Enabled = false;
+                //tmrTimer.Enabled = false;
+            }
         }
+
+        private void chkEnabled_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chkEnabled.Checked)
+            {
+                btnStart.Enabled = true;
+                Properties.GW_Runner.Default.Enabled = true;
+            }
+            else
+            {
+                btnStart.Enabled = false;
+                Properties.GW_Runner.Default.Enabled = false;
+            }
+
+            Properties.GW_Runner.Default.Save();
+        }
+
+        private void tmrTimer_Tick(object sender, EventArgs e)
+        {
+            TimeSpan runTime = (DateTime.Now - started).Duration();
+            lblRunTime.Text = (runTime.Days.ToString()).PadLeft(3, '0') + "d " +
+                              (runTime.Hours.ToString()).PadLeft(2, '0') + ":" +
+                              (runTime.Minutes.ToString()).PadLeft(2, '0') + ":" +
+                              (runTime.Seconds.ToString()).PadLeft(2, '0');
+            CheckGatewayIsRunning();
+        }
+
+        private void CheckGatewayIsRunning()
+        {
+            if (!IsRunning("ibgateway"))
+            {
+                LogFailure();
+                StartGW();
+            }
+        }
+
+        bool IsRunning(string name) => Process.GetProcessesByName(name).Length > 0;
     }
 }
