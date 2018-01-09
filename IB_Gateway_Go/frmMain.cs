@@ -26,7 +26,6 @@ namespace IB_Gateway_Runner
             else
             {
                 StopGW();
-                if (!chkEnabled.Checked) btnStart.Enabled = false;
             }
         }
 
@@ -166,17 +165,20 @@ namespace IB_Gateway_Runner
         private void tmrTimer_Tick(object sender, EventArgs e)
         {
             TimeSpan runTime = (DateTime.Now - started).Duration();
+
+            if (btnStart.Text == "Stop")
             lblRunTime.Text = (runTime.Days.ToString()).PadLeft(3, '0') + "d " +
                               (runTime.Hours.ToString()).PadLeft(2, '0') + ":" +
                               (runTime.Minutes.ToString()).PadLeft(2, '0') + ":" +
                               (runTime.Seconds.ToString()).PadLeft(2, '0');
+
             CheckGatewayIsRunning();
         }
 
         private void CheckGatewayIsRunning()
         {
        
-             if (chkEnabled.Checked && !IsRunning(GWProcessName))
+             if (chkEnabled.Checked && !IsRunning(GWProcessName) && btnStart.Text == "Stop")
             {
                 LogFailure();
                 StartGW();
@@ -216,7 +218,7 @@ namespace IB_Gateway_Runner
                 return;
             }
 
-            if (chkRunGWOnStartUp.Checked && chkEnabled.Checked)
+            if (chkRunGWOnStartUp.Checked)
             {
                 logger.Info("IB GW Runner started on startup.");
                 StartGW();
